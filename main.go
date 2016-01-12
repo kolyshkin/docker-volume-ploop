@@ -14,11 +14,12 @@ import (
 
 // Options and their default values
 var (
-	home = flag.String("home", "/pcs", "Base directory where volumes are created")
-	size = flag.String("size", "16GB", "Default image size")
-	mode = flag.String("mode", "expanded", "Default ploop image mode")
-	clog = flag.Uint("clog", 0, "Cluster block log size in 512-byte sectors")
-	help = flag.Bool("help", false, "Print usage information")
+	home     = flag.String("home", "/pcs", "Base directory where volumes are created")
+	size     = flag.String("size", "16GB", "Default image size")
+	mode     = flag.String("mode", "expanded", "Default ploop image mode")
+	clog     = flag.Uint("clog", 0, "Cluster block log size in 512-byte sectors")
+	help     = flag.Bool("help", false, "Print usage information")
+	logLevel = flag.String("log-level", "warning", "Logging level")
 )
 
 func usage(ret int) {
@@ -50,6 +51,16 @@ func main() {
 	}
 
 	opts.clog = *clog
+
+	// Set log level
+	lvl, err := logrus.ParseLevel(*logLevel)
+	if err != nil {
+		logrus.Fatalf("Can't parse log-level %s: %s\n", *logLevel, err)
+	}
+	logrus.SetLevel(lvl)
+	if lvl == logrus.DebugLevel {
+		ploop.SetVerboseLevel(ploop.Timestamps)
+	}
 
 	// Let's run!
 	d := newPloopDriver(*home, &opts)
