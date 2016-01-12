@@ -46,7 +46,7 @@ func main() {
 
 	opts.mode, err = ploop.ParseImageMode(*mode)
 	if err != nil {
-		logrus.Fatalf("Can't parse mode %s: %s\n", size, err)
+		logrus.Fatalf("Can't parse mode %s: %s\n", *mode, err)
 	}
 
 	opts.clog = *clog
