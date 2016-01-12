@@ -43,10 +43,30 @@ type ploopDriver struct {
 }
 
 func newPloopDriver(home string, opts *volumeOptions) ploopDriver {
+	// home must exist
+	_, err := os.Stat(home)
+	if err != nil {
+		if os.IsNotExist(err) {
+			logrus.Fatalf("Error %s\n", err)
+		} else {
+			logrus.Fatalf("Unexpected error from stat(%s): %s\n", home, err)
+		}
+	}
+
 	d := ploopDriver{
 		home:   home,
 		opts:   *opts,
 		mounts: make(map[string]*mount),
+	}
+
+	// Make sure to create base paths we'll use
+	err = os.MkdirAll(d.img(""), 0700)
+	if err != nil {
+		logrus.Fatalf("Error %s\n", err)
+	}
+	err = os.MkdirAll(d.mnt(""), 0700)
+	if err != nil {
+		logrus.Fatalf("Error %s\n", err)
 	}
 
 	return d
