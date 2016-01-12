@@ -158,7 +158,8 @@ func (d ploopDriver) Unmount(r volume.Request) volume.Response {
 	defer p.Close()
 
 	err = p.Umount()
-	if err != nil {
+	// ignore "is not mounted" error
+	if err != nil && !ploop.IsNotMounted(err) {
 		logrus.Errorf("Can't unmount ploop: %s\n", err)
 		return volume.Response{Err: err.Error()}
 	}
