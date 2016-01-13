@@ -153,8 +153,13 @@ func (d ploopDriver) Mount(r volume.Request) volume.Response {
 	}
 	defer p.Close()
 
-	var mp ploop.MountParam
-	mp.Target = d.mnt(r.Name)
+	mnt := d.mnt(r.Name)
+	err = os.Mkdir(mnt, 0700)
+	if err != nil && !os.IsExist(err) {
+		logrus.Fatalf("Error %s\n", err)
+	}
+
+	mp := ploop.MountParam{Target: mnt}
 
 	dev, err := p.Mount(&mp)
 	if err != nil {
