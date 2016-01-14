@@ -169,7 +169,7 @@ func (d ploopDriver) Mount(r volume.Request) volume.Response {
 	logrus.Debugf("Mounted %s to %s (dev=%s)\n", r.Name, d.mnt(r.Name), dev)
 
 	// all went well
-	return volume.Response{}
+	return volume.Response{Mountpoint: mnt}
 }
 
 func (d ploopDriver) Unmount(r volume.Request) volume.Response {
