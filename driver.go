@@ -73,8 +73,6 @@ func newPloopDriver(home string, opts *volumeOptions) ploopDriver {
 }
 
 func (d ploopDriver) Create(r volume.Request) volume.Response {
-	logrus.Debugf("Creating volume %s", r.Name)
-
 	// check if it already exists
 	dd := d.dd(r.Name)
 	_, err := os.Stat(dd)
@@ -87,6 +85,7 @@ func (d ploopDriver) Create(r volume.Request) volume.Response {
 		return volume.Response{Err: err.Error()}
 	}
 
+	logrus.Debugf("Creating volume %s", r.Name)
 	// Create containing directory
 	dir := d.dir(r.Name)
 	err = os.Mkdir(dir, 0700)
