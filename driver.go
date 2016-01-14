@@ -182,6 +182,11 @@ func (d ploopDriver) Unmount(r volume.Request) volume.Response {
 	}
 	defer p.Close()
 
+	if m, _ := p.IsMounted(); !m {
+		// not mounted, nothing to do
+		return volume.Response{}
+	}
+
 	err = p.Umount()
 	// ignore "is not mounted" error
 	if err != nil && !ploop.IsNotMounted(err) {
