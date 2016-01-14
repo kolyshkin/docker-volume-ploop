@@ -23,7 +23,7 @@ var (
 )
 
 func usage(ret int) {
-	fmt.Fprintf(os.Stderr, "Usage: %s [options]\n", path.Base(os.Args[0]))
+	fmt.Printf("Usage: %s [options]\n", path.Base(os.Args[0]))
 	flag.PrintDefaults()
 
 	os.Exit(ret)
