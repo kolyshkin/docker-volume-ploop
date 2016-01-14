@@ -14,12 +14,13 @@ import (
 
 // Options and their default values
 var (
-	home     = flag.String("home", "/pcs", "Base directory where volumes are created")
-	size     = flag.String("size", "16GB", "Default image size")
-	mode     = flag.String("mode", "expanded", "Default ploop image mode")
-	clog     = flag.Uint("clog", 0, "Cluster block log size in 512-byte sectors")
-	help     = flag.Bool("help", false, "Print usage information")
-	logLevel = flag.String("log-level", "warning", "Logging level")
+	home  = flag.String("home", "/pcs", "Base directory where volumes are created")
+	size  = flag.String("size", "16GB", "Default image size")
+	mode  = flag.String("mode", "expanded", "Default ploop image mode")
+	clog  = flag.Uint("clog", 0, "Cluster block log size in 512-byte sectors")
+	help  = flag.Bool("help", false, "Print usage information")
+	debug = flag.Bool("debug", false, "Be verbose")
+	quiet = flag.Bool("quiet", false, "Be quiet (errors only, to stderr)")
 )
 
 func usage(ret int) {
@@ -53,13 +54,17 @@ func main() {
 	opts.clog = *clog
 
 	// Set log level
-	lvl, err := logrus.ParseLevel(*logLevel)
-	if err != nil {
-		logrus.Fatalf("Can't parse log-level %s: %s\n", *logLevel, err)
-	}
-	logrus.SetLevel(lvl)
-	if lvl == logrus.DebugLevel {
+	if *debug {
+		if *quiet {
+			logrus.Fatalf("Flags 'debug' and 'verbose' are mutually exclusive\n")
+		}
+		logrus.SetLevel(logrus.DebugLevel)
 		ploop.SetVerboseLevel(ploop.Timestamps)
+	}
+	if *quiet {
+		logrus.SetOutput(os.Stderr)
+		logrus.SetLevel(logrus.ErrorLevel)
+		ploop.SetVerboseLevel(ploop.NoStdout)
 	}
 
 	// Let's run!
