@@ -47,9 +47,9 @@ func newPloopDriver(home string, opts *volumeOptions) ploopDriver {
 	_, err := os.Stat(home)
 	if err != nil {
 		if os.IsNotExist(err) {
-			logrus.Fatalf("Error %s\n", err)
+			logrus.Fatalf("Error %s", err)
 		} else {
-			logrus.Fatalf("Unexpected error from stat(%s): %s\n", home, err)
+			logrus.Fatalf("Unexpected error from stat(%s): %s", home, err)
 		}
 	}
 
@@ -62,18 +62,18 @@ func newPloopDriver(home string, opts *volumeOptions) ploopDriver {
 	// Make sure to create base paths we'll use
 	err = os.MkdirAll(d.img(""), 0700)
 	if err != nil {
-		logrus.Fatalf("Error %s\n", err)
+		logrus.Fatalf("Error %s", err)
 	}
 	err = os.MkdirAll(d.mnt(""), 0700)
 	if err != nil {
-		logrus.Fatalf("Error %s\n", err)
+		logrus.Fatalf("Error %s", err)
 	}
 
 	return d
 }
 
 func (d ploopDriver) Create(r volume.Request) volume.Response {
-	logrus.Debugf("Creating volume %s\n", r.Name)
+	logrus.Debugf("Creating volume %s", r.Name)
 
 	// check if it already exists
 	dd := d.dd(r.Name)
@@ -83,7 +83,7 @@ func (d ploopDriver) Create(r volume.Request) volume.Response {
 		return volume.Response{}
 	}
 	if !os.IsNotExist(err) {
-		logrus.Errorf("Unexpected error from stat(): %s\n", err)
+		logrus.Errorf("Unexpected error from stat(): %s", err)
 		return volume.Response{Err: err.Error()}
 	}
 
@@ -108,7 +108,7 @@ func (d ploopDriver) Create(r volume.Request) volume.Response {
 }
 
 func (d ploopDriver) Remove(r volume.Request) volume.Response {
-	logrus.Debugf("Removing volume %s\n", r.Name)
+	logrus.Debugf("Removing volume %s", r.Name)
 
 	/* The ploop image to be removed might be mounted.
 	 * The question is, what is the more correct thing to do:
@@ -144,11 +144,11 @@ func (d ploopDriver) Remove(r volume.Request) volume.Response {
 }
 
 func (d ploopDriver) Mount(r volume.Request) volume.Response {
-	logrus.Debugf("Mounting volume %s\n", r.Name)
+	logrus.Debugf("Mounting volume %s", r.Name)
 
 	p, err := ploop.Open(d.dd(r.Name))
 	if err != nil {
-		logrus.Errorf("Can't open ploop: %s\n", err)
+		logrus.Errorf("Can't open ploop: %s", err)
 		return volume.Response{Err: err.Error()}
 	}
 	defer p.Close()
@@ -156,28 +156,28 @@ func (d ploopDriver) Mount(r volume.Request) volume.Response {
 	mnt := d.mnt(r.Name)
 	err = os.Mkdir(mnt, 0700)
 	if err != nil && !os.IsExist(err) {
-		logrus.Fatalf("Error %s\n", err)
+		logrus.Fatalf("Error %s", err)
 	}
 
 	mp := ploop.MountParam{Target: mnt}
 
 	dev, err := p.Mount(&mp)
 	if err != nil {
-		logrus.Errorf("Can't mount ploop: %s\n", err)
+		logrus.Errorf("Can't mount ploop: %s", err)
 		return volume.Response{Err: err.Error()}
 	}
-	logrus.Debugf("Mounted %s to %s (dev=%s)\n", r.Name, d.mnt(r.Name), dev)
+	logrus.Debugf("Mounted %s to %s (dev=%s)", r.Name, d.mnt(r.Name), dev)
 
 	// all went well
 	return volume.Response{Mountpoint: mnt}
 }
 
 func (d ploopDriver) Unmount(r volume.Request) volume.Response {
-	logrus.Debugf("Unmounting volume %s\n", r.Name)
+	logrus.Debugf("Unmounting volume %s", r.Name)
 
 	p, err := ploop.Open(d.dd(r.Name))
 	if err != nil {
-		logrus.Errorf("Can't open ploop: %s\n", err)
+		logrus.Errorf("Can't open ploop: %s", err)
 		return volume.Response{Err: err.Error()}
 	}
 	defer p.Close()
@@ -190,7 +190,7 @@ func (d ploopDriver) Unmount(r volume.Request) volume.Response {
 	err = p.Umount()
 	// ignore "is not mounted" error
 	if err != nil && !ploop.IsNotMounted(err) {
-		logrus.Errorf("Can't unmount ploop: %s\n", err)
+		logrus.Errorf("Can't unmount ploop: %s", err)
 		return volume.Response{Err: err.Error()}
 	}
 

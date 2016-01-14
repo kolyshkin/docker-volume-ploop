@@ -42,13 +42,13 @@ func main() {
 
 	sizeBytes, err := units.RAMInBytes(*size)
 	if err != nil {
-		logrus.Fatalf("Can't parse size %s: %s\n", *size, err)
+		logrus.Fatalf("Can't parse size %s: %s", *size, err)
 	}
 	opts.size = uint64(sizeBytes >> 10) // convert to KB
 
 	opts.mode, err = ploop.ParseImageMode(*mode)
 	if err != nil {
-		logrus.Fatalf("Can't parse mode %s: %s\n", *mode, err)
+		logrus.Fatalf("Can't parse mode %s: %s", *mode, err)
 	}
 
 	opts.clog = *clog
@@ -56,7 +56,7 @@ func main() {
 	// Set log level
 	if *debug {
 		if *quiet {
-			logrus.Fatalf("Flags 'debug' and 'verbose' are mutually exclusive\n")
+			logrus.Fatalf("Flags 'debug' and 'verbose' are mutually exclusive")
 		}
 		logrus.SetLevel(logrus.DebugLevel)
 		ploop.SetVerboseLevel(ploop.Timestamps)
