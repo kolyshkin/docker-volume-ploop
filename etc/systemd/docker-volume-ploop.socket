@@ -1,0 +1,9 @@
+[Unit]
+Description=Docker Volume Plugin for ploop and Virtuozzo Storage Activation Socket
+PartOf=docker-volume-ploop.service
+
+[Socket]
+ListenStream=/run/docker/plugins/ploop.sock
+
+[Install]
+WantedBy=sockets.target

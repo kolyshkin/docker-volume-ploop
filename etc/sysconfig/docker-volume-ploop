@@ -1,0 +1,10 @@
+# Options for docker-volume-ploop plugin
+
+# Set the plugin home directory
+#DKV_PLOOP_HOME="-home /media/docker-volumes/"
+
+# Enable verbose debugging
+#DKV_PLOOP_OPTS="-debug"
+
+# Set default ploop image options, such as size
+#DKV_PLOOP_DEF="-size 64G"

@@ -1,0 +1,13 @@
+[Unit]
+Description=Docker Volume Plugin for ploop and Virtuozzo Storage
+Documentation=https://github.com/kolyshkin/docker-volume-ploop
+After=pstorage-fs.service
+Before=docker.service
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/docker-volume-ploop
+ExecStart=/usr/bin/docker-volume-ploop $DKV_PLOOP_HOME $DKV_PLOOP_OPTS $DKV_PLOOP_DEF
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
