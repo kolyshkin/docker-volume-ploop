@@ -56,10 +56,11 @@ func main() {
 	// Set log level
 	if *debug {
 		if *quiet {
-			logrus.Fatalf("Flags 'debug' and 'verbose' are mutually exclusive")
+			logrus.Fatalf("Flags 'debug' and 'quiet' are mutually exclusive")
 		}
 		logrus.SetLevel(logrus.DebugLevel)
 		ploop.SetVerboseLevel(ploop.Timestamps)
+		logrus.Debugf("Debug logging enabled")
 	}
 	if *quiet {
 		logrus.SetOutput(os.Stderr)
