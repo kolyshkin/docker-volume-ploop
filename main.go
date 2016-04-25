@@ -8,7 +8,6 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/docker/go-plugins-helpers/volume"
-	"github.com/docker/go-units"
 	"github.com/kolyshkin/goploop"
 )
 
@@ -17,7 +16,7 @@ var (
 	home  = flag.String("home", "/pcs", "Base directory where volumes are created")
 	size  = flag.String("size", "16GB", "Default image size")
 	mode  = flag.String("mode", "expanded", "Default ploop image mode")
-	clog  = flag.Uint("clog", 0, "Cluster block log size in 512-byte sectors")
+	clog  = flag.String("clog", "0", "Cluster block log size in 512-byte sectors")
 	help  = flag.Bool("help", false, "Print usage information")
 	debug = flag.Bool("debug", false, "Be verbose")
 	quiet = flag.Bool("quiet", false, "Be quiet (errors only, to stderr)")
@@ -40,18 +39,15 @@ func main() {
 	// Fill in the default volume options
 	var opts volumeOptions
 
-	sizeBytes, err := units.RAMInBytes(*size)
-	if err != nil {
-		logrus.Fatalf("Can't parse size %s: %s", *size, err)
+	if err := opts.setSize(*size); err != nil {
+		logrus.Fatalf(err.Error())
 	}
-	opts.size = uint64(sizeBytes >> 10) // convert to KB
-
-	opts.mode, err = ploop.ParseImageMode(*mode)
-	if err != nil {
-		logrus.Fatalf("Can't parse mode %s: %s", *mode, err)
+	if err := opts.setMode(*mode); err != nil {
+		logrus.Fatalf(err.Error())
 	}
-
-	opts.clog = *clog
+	if err := opts.setCLog(*clog); err != nil {
+		logrus.Fatalf(err.Error())
+	}
 
 	// Set log level
 	if *debug {

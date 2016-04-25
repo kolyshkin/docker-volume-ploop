@@ -1,12 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
 	"sync"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/docker/go-plugins-helpers/volume"
+	"github.com/docker/go-units"
 	"github.com/kolyshkin/goploop"
 )
 
@@ -41,6 +44,36 @@ type ploopDriver struct {
 	opts    volumeOptions
 	mountsM sync.RWMutex
 	mounts  map[string]*mount
+}
+
+func (o *volumeOptions) setSize(str string) error {
+	sizeBytes, err := units.RAMInBytes(str)
+	if err != nil {
+		return fmt.Errorf("Can't parse size %s: %s", str, err)
+	}
+
+	o.size = uint64(sizeBytes >> 10) // convert to KB
+	return nil
+}
+
+func (o *volumeOptions) setMode(str string) error {
+	mode, err := ploop.ParseImageMode(str)
+	if err != nil {
+		fmt.Errorf("Can't parse mode %s: %s", str, err)
+	}
+
+	o.mode = mode
+	return nil
+}
+
+func (o *volumeOptions) setCLog(str string) error {
+	clog, err := strconv.ParseUint(str, 0, 32)
+	if err != nil {
+		fmt.Errorf("Can't parse clog %s: %s", str, err)
+	}
+
+	o.clog = uint(clog)
+	return nil
 }
 
 func newPloopDriver(home string, opts *volumeOptions) ploopDriver {
@@ -86,6 +119,33 @@ func (d ploopDriver) Create(r volume.Request) volume.Response {
 		return volume.Response{Err: err.Error()}
 	}
 
+	// Parse options
+	o := d.opts
+
+	if val, ok := r.Options["size"]; ok {
+		err := o.setSize(val)
+		if err != nil {
+			logrus.Errorf(err.Error())
+			return volume.Response{Err: err.Error()}
+		}
+	}
+
+	if val, ok := r.Options["mode"]; ok {
+		err := o.setMode(val)
+		if err != nil {
+			logrus.Errorf(err.Error())
+			return volume.Response{Err: err.Error()}
+		}
+	}
+
+	if val, ok := r.Options["clog"]; ok {
+		err := o.setCLog(val)
+		if err != nil {
+			logrus.Errorf(err.Error())
+			return volume.Response{Err: err.Error()}
+		}
+	}
+
 	logrus.Debugf("Creating volume %s", r.Name)
 	// Create containing directory
 	dir := d.dir(r.Name)
@@ -96,7 +156,7 @@ func (d ploopDriver) Create(r volume.Request) volume.Response {
 
 	// Create an image
 	file := d.img(r.Name)
-	cp := ploop.CreateParam{Size: d.opts.size, Mode: d.opts.mode, File: file, CLog: d.opts.clog, Flags: ploop.NoLazy}
+	cp := ploop.CreateParam{Size: o.size, Mode: o.mode, File: file, CLog: o.clog, Flags: ploop.NoLazy}
 
 	if err := ploop.Create(&cp); err != nil {
 		logrus.Errorf("Can't create ploop image: %s", err)
