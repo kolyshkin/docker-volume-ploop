@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"os"
 	"sync"
 
@@ -198,6 +199,82 @@ func (d ploopDriver) Unmount(r volume.Request) volume.Response {
 	return volume.Response{}
 }
 
+func (d ploopDriver) Get(r volume.Request) volume.Response {
+	logrus.Debugf("Called Get(%s)", r.Name)
+
+	exist, err := d.volExist(r.Name)
+	if err != nil {
+		return volume.Response{Err: err.Error()}
+	}
+	if !exist {
+		// no such volume
+		return volume.Response{Err: "Can't find volume"}
+	}
+
+	// TODO: check if it's mounted
+	return volume.Response{Volume: &volume.Volume{Name: r.Name, Mountpoint: d.mnt(r.Name)}}
+}
+
+func (d ploopDriver) List(r volume.Request) volume.Response {
+	logrus.Debugf("Called List()")
+	dir := d.dir("")
+
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		logrus.Errorf("Can't list directory %s: %s", dir, err)
+		return volume.Response{Err: err.Error()}
+	}
+
+	vols := make([]*volume.Volume, 0, len(files))
+
+	for _, f := range files {
+		if f.IsDir() {
+			name := f.Name()
+			// Check if DiskDescriptor.xml is there
+			exist, _ := d.volExist(name)
+			if !exist {
+				continue
+			}
+			vol := &volume.Volume{
+				Name:       name,
+				Mountpoint: d.mnt(name),
+			}
+			vols = append(vols, vol)
+		}
+	}
+
+	return volume.Response{Volumes: vols}
+}
+
 func (d ploopDriver) Path(r volume.Request) volume.Response {
+	logrus.Debugf("Called Path (%s)", r.Name)
+
+	exist, err := d.volExist(r.Name)
+	if err != nil {
+		return volume.Response{Err: err.Error()}
+	}
+
+	if !exist {
+		return volume.Response{Err: "Can't find volume"}
+	}
+
+	// TODO: check if mounted?
 	return volume.Response{Mountpoint: d.mnt(r.Name)}
+}
+
+// Check if a given volume exist
+func (d ploopDriver) volExist(name string) (bool, error) {
+	dd := d.dd(name)
+	_, err := os.Stat(dd)
+	if err == nil {
+		return true, nil
+	}
+
+	if os.IsNotExist(err) {
+		// no such volume
+		return false, nil
+	} else {
+		logrus.Errorf("Unexpected error from stat(%s): %s", dd, err)
+		return false, err
+	}
 }
