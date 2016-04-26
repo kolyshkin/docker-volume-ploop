@@ -1,6 +1,6 @@
 This is a volume plugin for Docker, allowing Docker containers
-to enjoy persistent volumes residing on ploop, either local or
-with distributed pstorage file system.
+to enjoy persistent volumes residing on ploop, either locally
+or on the distributed Virtuozzo Storage file system.
 
 ## Prerequisites
 
@@ -34,7 +34,7 @@ echo 'PATH=$GOPATH/bin:$PATH' >> ~/.bash_profile
 You need to have this plugin started before starting docker daemon.
 For available options, see
 
-```./docker-volume-ploop -help```
+```docker-volume-ploop -help```
 
 Most important, you need to provide a path where the plugin will store
 its volumes. For example:
