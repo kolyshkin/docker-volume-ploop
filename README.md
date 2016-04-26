@@ -41,13 +41,21 @@ its volumes. For example:
 
 ```docker-volume-ploop -home /some/path```
 
-An example of running container with a ploop volume:
+Next, you need to create a new volume. Example:
 
-```docker run -it --volume-driver ploop -v VOLUME:/MOUNT alpine /bin/ash```
+```docker volume create -d ploop -o size=512G -name MyFirstVolume```
+
+Finally, run a container with the volume:
+
+```docker run -it -v VOLUME:/MOUNT alpine /bin/ash```
 
 Here ```VOLUME``` is the volume name, and ```MOUNT``` is the path under which
 the volume will be available inside a container.
 
+See ```man docker volume``` for other volume operations. For example, to list existing volumes:
+ 
+ ```docker volume ls```
+ 
 ## Licensing
 
 This software is licensed under the Apache License, Version 2.0. See
