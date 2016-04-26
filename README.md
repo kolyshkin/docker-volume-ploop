@@ -8,9 +8,21 @@ This plugin relies of the following software:
 * [goploop](https://github.com/kolyshkin/goploop) (or [goploop-cli](https://github.com/kolyshkin/goploop-cli))
 * [Docker volume plugin helper](https://github.com/docker/go-plugins-helpers/tree/master/volume)
 
+## Docker with Virtuozzo/OpenVZ kernel
+
+**For Docker to work, you need to make sure conntracks are enabled on the host.** In case it's not done, docker might complain like this:
+
+```Error starting daemon: Error initializing network controller: error obtaining controller instance: failed to create NAT chain: iptables failed: iptables --wait -t nat -N DOCKER: iptables v1.4.21: can't initialize iptables table `nat': Table does not exist (do you need to insmod?)\nPerhaps iptables or your kernel needs to be upgraded.\n (exit status 3)```
+
+To fix, edit ```/etc/modprobe.d/parallels.conf``` (or ```/etc/modprobe.d/openvz.conf```) to look like this:
+
+```options nf_conntrack ip_conntrack_disable_ve0=0```
+
+In other words, the value should be set to 0. After making the change, reboot the machine.
+
 ## Installation
 
-The following assumes you are using a recent version of Virtuozzo or OpenVZ.
+The following assumes you are using a recent version of Virtuozzo or OpenVZ, and have Docker up and running.
 
 First, you need to have ```ploop-devel``` package installed:
 
