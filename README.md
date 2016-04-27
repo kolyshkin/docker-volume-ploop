@@ -79,21 +79,26 @@ Use ```ploop``` command line tool, and refer to an image by path to ```DiskDescr
 ### Snapshots
 
 To create a snapshot:
+
 ```ploop snapshot DiskDescriptor.xml```
 
 To list snapshots:
+
 ```ploop snapshot-list DiskDescriptor.xml```
  
- To delete a snapshot:
- ```ploop snapshot-delete -u UUID DiskDescriptor.xml```
+To delete a snapshot:
+
+```ploop snapshot-delete -u UUID DiskDescriptor.xml```
  
- To mount a snapshot (read-only):
- ```ploop mount -r -u UUID -m MOUNT_POINT DiskDescriptor.xml```
+To mount a snapshot (read-only):
+
+```ploop mount -r -u UUID -m MOUNT_POINT DiskDescriptor.xml```
  
- ### Resizing
+### Resizing
  
- To resize an image (can be done while it's running):
- ```ploop resize -s SIZE DiskDescriptor.xml```
+To resize an image (can be done while it's running):
+
+```ploop resize -s SIZE DiskDescriptor.xml```
  
 ### Checking
 
@@ -102,9 +107,11 @@ In case something is wrong (ploop image can't be mounted etc.), you might want t
 ```ploop check DiskDescriptor.xml```
 
 If you want to run fsck on an inner filesystem, you can use the following command:
+
 ```ploop mount -F DiskDescriptor.xml```
 
 Don't forget to unmount it:
+
 ```ploop umount DiskDescriptor.xml```
 
 ## Licensing
