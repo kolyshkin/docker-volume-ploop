@@ -333,8 +333,8 @@ func (d *ploopDriver) volExist(name string) (bool, error) {
 	if os.IsNotExist(err) {
 		// no such volume
 		return false, nil
-	} else {
-		logrus.Errorf("Unexpected error from stat(%s): %s", dd, err)
-		return false, err
 	}
+
+	logrus.Errorf("Unexpected error from stat(%s): %s", dd, err)
+	return false, err
 }
