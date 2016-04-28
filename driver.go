@@ -59,7 +59,7 @@ func (o *volumeOptions) setSize(str string) error {
 func (o *volumeOptions) setMode(str string) error {
 	mode, err := ploop.ParseImageMode(str)
 	if err != nil {
-		fmt.Errorf("Can't parse mode %s: %s", str, err)
+		return fmt.Errorf("Can't parse mode %s: %s", str, err)
 	}
 
 	o.mode = mode
@@ -69,7 +69,7 @@ func (o *volumeOptions) setMode(str string) error {
 func (o *volumeOptions) setCLog(str string) error {
 	clog, err := strconv.ParseUint(str, 0, 32)
 	if err != nil {
-		fmt.Errorf("Can't parse clog %s: %s", str, err)
+		return fmt.Errorf("Can't parse clog %s: %s", str, err)
 	}
 
 	o.clog = uint(clog)
