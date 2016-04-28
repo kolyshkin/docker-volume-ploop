@@ -76,7 +76,7 @@ func (o *volumeOptions) setCLog(str string) error {
 	return nil
 }
 
-func newPloopDriver(home string, opts *volumeOptions) ploopDriver {
+func newPloopDriver(home string, opts *volumeOptions) *ploopDriver {
 	// home must exist
 	_, err := os.Stat(home)
 	if err != nil {
@@ -103,10 +103,10 @@ func newPloopDriver(home string, opts *volumeOptions) ploopDriver {
 		logrus.Fatalf("Error %s", err)
 	}
 
-	return d
+	return &d
 }
 
-func (d ploopDriver) Create(r volume.Request) volume.Response {
+func (d *ploopDriver) Create(r volume.Request) volume.Response {
 	// check if it already exists
 	dd := d.dd(r.Name)
 	_, err := os.Stat(dd)
@@ -167,7 +167,7 @@ func (d ploopDriver) Create(r volume.Request) volume.Response {
 	return volume.Response{}
 }
 
-func (d ploopDriver) Remove(r volume.Request) volume.Response {
+func (d *ploopDriver) Remove(r volume.Request) volume.Response {
 	logrus.Debugf("Removing volume %s", r.Name)
 
 	/* The ploop image to be removed might be mounted.
@@ -203,7 +203,7 @@ func (d ploopDriver) Remove(r volume.Request) volume.Response {
 	return volume.Response{}
 }
 
-func (d ploopDriver) Mount(r volume.Request) volume.Response {
+func (d *ploopDriver) Mount(r volume.Request) volume.Response {
 	logrus.Debugf("Mounting volume %s", r.Name)
 
 	p, err := ploop.Open(d.dd(r.Name))
@@ -233,7 +233,7 @@ func (d ploopDriver) Mount(r volume.Request) volume.Response {
 	return volume.Response{Mountpoint: mnt}
 }
 
-func (d ploopDriver) Unmount(r volume.Request) volume.Response {
+func (d *ploopDriver) Unmount(r volume.Request) volume.Response {
 	logrus.Debugf("Unmounting volume %s", r.Name)
 
 	p, err := ploop.Open(d.dd(r.Name))
@@ -259,7 +259,7 @@ func (d ploopDriver) Unmount(r volume.Request) volume.Response {
 	return volume.Response{}
 }
 
-func (d ploopDriver) Get(r volume.Request) volume.Response {
+func (d *ploopDriver) Get(r volume.Request) volume.Response {
 	logrus.Debugf("Called Get(%s)", r.Name)
 
 	exist, err := d.volExist(r.Name)
@@ -275,7 +275,7 @@ func (d ploopDriver) Get(r volume.Request) volume.Response {
 	return volume.Response{Volume: &volume.Volume{Name: r.Name, Mountpoint: d.mnt(r.Name)}}
 }
 
-func (d ploopDriver) List(r volume.Request) volume.Response {
+func (d *ploopDriver) List(r volume.Request) volume.Response {
 	logrus.Debugf("Called List()")
 	dir := d.dir("")
 
@@ -306,7 +306,7 @@ func (d ploopDriver) List(r volume.Request) volume.Response {
 	return volume.Response{Volumes: vols}
 }
 
-func (d ploopDriver) Path(r volume.Request) volume.Response {
+func (d *ploopDriver) Path(r volume.Request) volume.Response {
 	logrus.Debugf("Called Path (%s)", r.Name)
 
 	exist, err := d.volExist(r.Name)
@@ -323,7 +323,7 @@ func (d ploopDriver) Path(r volume.Request) volume.Response {
 }
 
 // Check if a given volume exist
-func (d ploopDriver) volExist(name string) (bool, error) {
+func (d *ploopDriver) volExist(name string) (bool, error) {
 	dd := d.dd(name)
 	_, err := os.Stat(dd)
 	if err == nil {
