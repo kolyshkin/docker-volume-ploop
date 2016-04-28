@@ -67,5 +67,8 @@ func main() {
 	// Let's run!
 	d := newPloopDriver(*home, &opts)
 	h := volume.NewHandler(d)
-	fmt.Println(h.ServeUnix("root", "ploop"))
+	e := h.ServeUnix("root", "ploop")
+	if e != nil {
+		logrus.Fatalf("Failed to initialize: %s", e)
+	}
 }
