@@ -3,7 +3,8 @@ SOURCES = driver.go main.go paths.go
 BIN = docker-volume-ploop
 BINDIR = /usr/bin
 
-SYSTEMD_SERVICE = etc/systemd/docker-volume-ploop.service
+SYSTEMD_FILES = etc/systemd/docker-volume-ploop.service \
+		etc/systemd/docker-volume-ploop.socket
 SYSTEMD_DIR = /usr/lib/systemd/system
 
 CONFIG = etc/sysconfig/docker-volume-ploop
@@ -24,7 +25,7 @@ install: $(BIN) $(SYSTEMD_SERVICE) $(CONFIG)
 	install -d $(DESTDIR)$(BINDIR)
 	install -m 755 $(BIN) $(DESTDIR)$(BINDIR)
 	install -d $(DESTDIR)$(SYSTEMD_DIR)
-	install -m 644 $(SYSTEMD_SERVICE) $(DESTDIR)$(SYSTEMD_DIR)
+	install -m 644 $(SYSTEMD_FILES) $(DESTDIR)$(SYSTEMD_DIR)
 	install -d $(DESTDIR)$(CONFIG_DIR)
 	install -m 644 $(CONFIG) $(DESTDIR)$(CONFIG_DIR)
 

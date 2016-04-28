@@ -1,8 +1,9 @@
 [Unit]
 Description=Docker Volume Plugin for ploop and Virtuozzo Storage
 Documentation=https://github.com/kolyshkin/docker-volume-ploop
-After=pstorage-fs.service
+After=pstorage-fs.service docker-volume-ploop.socket
 Before=docker.service
+Requires=docker-volume-ploop.socket
 
 [Service]
 EnvironmentFile=-/etc/sysconfig/docker-volume-ploop
