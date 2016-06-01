@@ -13,7 +13,7 @@ CONFIG_DIR = /etc/sysconfig
 all: $(BIN)
 
 $(BIN): $(SOURCES)
-	go build -o $(BIN) $(SOURCES)
+	godep go build -o $(BIN) $(SOURCES)
 
 test:
 	go test -v .
