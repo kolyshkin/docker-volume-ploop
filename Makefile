@@ -1,4 +1,5 @@
 SOURCES = driver.go main.go paths.go
+WORKPLACE = $(abspath Godeps/_workspace)
 
 BIN = docker-volume-ploop
 BINDIR = /usr/bin
@@ -13,7 +14,7 @@ CONFIG_DIR = /etc/sysconfig
 all: $(BIN)
 
 $(BIN): $(SOURCES)
-	godep go build -o $(BIN) $(SOURCES)
+	GOPATH=$(WORKPLACE):$$GOPATH go build -o $(BIN) $(SOURCES)
 
 test:
 	go test -v .
