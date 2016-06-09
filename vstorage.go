@@ -64,7 +64,8 @@ func vstorageOut(args ...string) (string, error) {
 }
 
 func vstorageSetTier(path string, tier int8) error {
-	err := error(nil)
+	var err error
+
 	// TODO: ignore if path is not on vstorage
 	if tier >= 0 {
 		arg := fmt.Sprintf("tier=%d", tier)
