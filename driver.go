@@ -32,6 +32,7 @@ type volumeOptions struct {
 	size uint64          // ploop image size, in kilobytes
 	mode ploop.ImageMode // ploop image format (expanded/prealloc/raw)
 	clog uint            // cluster block log size in 512-byte sectors
+	tier int8            // Virtuozzo storage tier (-1: use default)
 }
 
 type mount struct {
@@ -73,6 +74,16 @@ func (o *volumeOptions) setCLog(str string) error {
 	}
 
 	o.clog = uint(clog)
+	return nil
+}
+
+func (o *volumeOptions) setTier(str string) error {
+	tier, err := strconv.ParseInt(str, 0, 8)
+	if err != nil {
+		return fmt.Errorf("Can't parse tier %s: %s", str, err)
+	}
+
+	o.tier = int8(tier)
 	return nil
 }
 
@@ -146,12 +157,25 @@ func (d *ploopDriver) Create(r volume.Request) volume.Response {
 		}
 	}
 
+	if val, ok := r.Options["tier"]; ok {
+		err := o.setTier(val)
+		if err != nil {
+			logrus.Errorf(err.Error())
+			return volume.Response{Err: err.Error()}
+		}
+	}
+
 	logrus.Debugf("Creating volume %s", r.Name)
 	// Create containing directory
 	dir := d.dir(r.Name)
 	err = os.Mkdir(dir, 0700)
 	if err != nil {
 		return volume.Response{Err: err.Error()}
+	}
+
+	// set storage tier
+	if err := vstorageSetTier(dir, o.tier); err != nil {
+		logrus.Warnf("Can't set tier %d: %s", o.tier, err)
 	}
 
 	// Create an image

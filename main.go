@@ -17,6 +17,7 @@ var (
 	size  = flag.String("size", "16GB", "Default image size")
 	mode  = flag.String("mode", "expanded", "Default ploop image mode")
 	clog  = flag.String("clog", "0", "Cluster block log size in 512-byte sectors")
+	tier  = flag.String("tier", "-1", "Virtuozzo Storage tier (0 is fastest")
 	help  = flag.Bool("help", false, "Print usage information")
 	debug = flag.Bool("debug", false, "Be verbose")
 	quiet = flag.Bool("quiet", false, "Be quiet (errors only, to stderr)")
@@ -46,6 +47,9 @@ func main() {
 		logrus.Fatalf(err.Error())
 	}
 	if err := opts.setCLog(*clog); err != nil {
+		logrus.Fatalf(err.Error())
+	}
+	if err := opts.setTier(*tier); err != nil {
 		logrus.Fatalf(err.Error())
 	}
 
