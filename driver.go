@@ -184,6 +184,7 @@ func (d *ploopDriver) Create(r volume.Request) volume.Response {
 
 	if err := ploop.Create(&cp); err != nil {
 		logrus.Errorf("Can't create ploop image: %s", err)
+		os.RemoveAll(dir)
 		return volume.Response{Err: err.Error()}
 	}
 
