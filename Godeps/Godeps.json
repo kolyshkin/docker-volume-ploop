@@ -1,44 +1,50 @@
 {
 	"ImportPath": "github.com/kolyshkin/docker-volume-ploop",
-	"GoVersion": "go1.5.4",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v75",
 	"Deps": [
 		{
+			"ImportPath": "github.com/Microsoft/go-winio",
+			"Comment": "0.3.6",
+			"Rev": "562bb09f6612d9a4e91597184709d1cdba95af93"
+		},
+		{
 			"ImportPath": "github.com/Sirupsen/logrus",
-			"Comment": "v0.10.0-19-gf3cfb45",
-			"Rev": "f3cfb454f4c209e6668c95216c4744b8fddb2356"
+			"Comment": "v0.11.0-5-gabc6f20",
+			"Rev": "abc6f20dabf4b10195f233ad21ea6c5ba33acae0"
 		},
 		{
 			"ImportPath": "github.com/coreos/go-systemd/activation",
-			"Comment": "v8-2-g4484981",
-			"Rev": "4484981625c1a6a2ecb40a390fcb6a9bcfee76e3"
+			"Comment": "v14",
+			"Rev": "48702e0da86bd25e76cfef347e2adeb434a0d0a6"
 		},
 		{
 			"ImportPath": "github.com/coreos/go-systemd/util",
-			"Comment": "v8-2-g4484981",
-			"Rev": "4484981625c1a6a2ecb40a390fcb6a9bcfee76e3"
+			"Comment": "v14",
+			"Rev": "48702e0da86bd25e76cfef347e2adeb434a0d0a6"
 		},
 		{
 			"ImportPath": "github.com/coreos/pkg/dlopen",
-			"Comment": "v2",
-			"Rev": "7f080b6c11ac2d2347c3cd7521e810207ea1a041"
+			"Comment": "v3-2-g447b7ec",
+			"Rev": "447b7ec906e523386d9c53be15b55a8ae86ea944"
 		},
 		{
 			"ImportPath": "github.com/docker/go-connections/sockets",
-			"Comment": "v0.2.0-6-gc7838b2",
-			"Rev": "c7838b258fbfa3fe88eecfb2a0e08ea0dbd6a646"
+			"Comment": "v0.2.1-10-gf512407",
+			"Rev": "f512407a188ecb16f31a33dbc9c4e4814afc1b03"
 		},
 		{
 			"ImportPath": "github.com/docker/go-plugins-helpers/sdk",
-			"Rev": "b6b774486d89219eba2d2b72ed50d32880167671"
+			"Rev": "60d242cfd0fb30e5002fbf76bf6872e81e85adba"
 		},
 		{
 			"ImportPath": "github.com/docker/go-plugins-helpers/volume",
-			"Rev": "b6b774486d89219eba2d2b72ed50d32880167671"
+			"Rev": "60d242cfd0fb30e5002fbf76bf6872e81e85adba"
 		},
 		{
 			"ImportPath": "github.com/docker/go-units",
-			"Comment": "v0.3.0-2-g09dda9d",
-			"Rev": "09dda9d4b0d748c57c14048906d3d094a58ec0c9"
+			"Comment": "v0.3.1-8-g8a7beac",
+			"Rev": "8a7beacffa3009a9ac66bad506b18ffdd110cf97"
 		},
 		{
 			"ImportPath": "github.com/kolyshkin/goploop",
@@ -46,12 +52,20 @@
 		},
 		{
 			"ImportPath": "github.com/opencontainers/runc/libcontainer/user",
-			"Comment": "v0.1.1-170-g6c485e6",
-			"Rev": "6c485e6902bb9dd77b8234042b8f00e20ef87a18"
+			"Comment": "v1.0.0-rc2-137-g43c4300",
+			"Rev": "43c43004ef0563ceab23bb8f254cd5061a6f607e"
 		},
 		{
 			"ImportPath": "golang.org/x/net/proxy",
-			"Rev": "c4c3ea71919de159c9e246d7be66deb7f0a39a58"
+			"Rev": "00ed5e97ea3a5ac46658b98e50259941947cec04"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "b699b7032584f0953262cb2788a0ca19bb494703"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/windows",
+			"Rev": "b699b7032584f0953262cb2788a0ca19bb494703"
 		}
 	]
 }
