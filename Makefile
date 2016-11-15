@@ -1,4 +1,4 @@
-SOURCES = driver.go main.go paths.go vstorage.go
+SOURCES = driver.go main.go paths.go vstorage.go fstype.go
 WORKPLACE = $(abspath Godeps/_workspace)
 
 BIN = docker-volume-ploop

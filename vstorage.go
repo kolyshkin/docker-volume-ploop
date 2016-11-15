@@ -74,3 +74,14 @@ func vstorageSetTier(path string, tier int8) error {
 
 	return err
 }
+
+// Check if a file/directory is actually on vstorage
+func isOnVstorage(path string) bool {
+	fs, err := GetFilesystemType(path)
+	if err != nil {
+		logrus.Errorf("Can't figure %s fs: %v", err)
+		return false
+	}
+
+	return fs == "fuse.vstorage"
+}

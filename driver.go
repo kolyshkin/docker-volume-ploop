@@ -29,10 +29,11 @@ import (
  */
 
 type volumeOptions struct {
-	size uint64          // ploop image size, in kilobytes
-	mode ploop.ImageMode // ploop image format (expanded/prealloc/raw)
-	clog uint            // cluster block log size in 512-byte sectors
-	tier int8            // Virtuozzo storage tier (-1: use default)
+	size  uint64          // ploop image size, in kilobytes
+	mode  ploop.ImageMode // ploop image format (expanded/prealloc/raw)
+	clog  uint            // cluster block log size in 512-byte sectors
+	tier  int8            // Virtuozzo storage tier (-1: use default)
+	scope string          // Volume scope (global/local/auto)
 }
 
 type mount struct {
@@ -87,6 +88,12 @@ func (o *volumeOptions) setTier(str string) error {
 	return nil
 }
 
+func (o *volumeOptions) setScope(str string) error {
+	// FIXME: check for local/global/auto?
+	o.scope = str
+	return nil
+}
+
 func newPloopDriver(home string, opts *volumeOptions) *ploopDriver {
 	// home must exist
 	_, err := os.Stat(home)
@@ -96,6 +103,16 @@ func newPloopDriver(home string, opts *volumeOptions) *ploopDriver {
 		} else {
 			logrus.Fatalf("Unexpected error from stat(%s): %s", home, err)
 		}
+	}
+
+	// Autodetect scope: global if home is on vstorage, local otherwise
+	if opts.scope == "auto" {
+		if isOnVstorage(home) {
+			opts.scope = "global"
+		} else {
+			opts.scope = "local"
+		}
+		logrus.Infof("Autodetecting driver scope: %s", opts.scope)
 	}
 
 	d := ploopDriver{
@@ -345,6 +362,11 @@ func (d *ploopDriver) Path(r volume.Request) volume.Response {
 
 	// TODO: check if mounted?
 	return volume.Response{Mountpoint: d.mnt(r.Name)}
+}
+func (d *ploopDriver) Capabilities(r volume.Request) volume.Response {
+	return volume.Response{
+		Capabilities: volume.Capability{
+			Scope: d.opts.scope}}
 }
 
 // Check if a given volume exist

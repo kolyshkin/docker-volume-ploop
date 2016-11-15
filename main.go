@@ -14,6 +14,7 @@ import (
 // Options and their default values
 var (
 	home  = flag.String("home", "/pcs", "Base directory where volumes are created")
+	scope = flag.String("scope", "auto", "Volumes scope (local or global)")
 	size  = flag.String("size", "16GB", "Default image size")
 	mode  = flag.String("mode", "expanded", "Default ploop image mode")
 	clog  = flag.String("clog", "0", "Cluster block log size in 512-byte sectors")
@@ -50,6 +51,9 @@ func main() {
 		logrus.Fatalf(err.Error())
 	}
 	if err := opts.setTier(*tier); err != nil {
+		logrus.Fatalf(err.Error())
+	}
+	if err := opts.setScope(*scope); err != nil {
 		logrus.Fatalf(err.Error())
 	}
 
