@@ -228,7 +228,7 @@ func (d *ploopDriver) Remove(r volume.Request) volume.Response {
 	return volume.Response{}
 }
 
-func (d *ploopDriver) Mount(r volume.Request) volume.Response {
+func (d *ploopDriver) Mount(r volume.MountRequest) volume.Response {
 	logrus.Debugf("Mounting volume %s", r.Name)
 
 	p, err := ploop.Open(d.dd(r.Name))
@@ -258,7 +258,7 @@ func (d *ploopDriver) Mount(r volume.Request) volume.Response {
 	return volume.Response{Mountpoint: mnt}
 }
 
-func (d *ploopDriver) Unmount(r volume.Request) volume.Response {
+func (d *ploopDriver) Unmount(r volume.UnmountRequest) volume.Response {
 	logrus.Debugf("Unmounting volume %s", r.Name)
 
 	p, err := ploop.Open(d.dd(r.Name))
