@@ -37,34 +37,43 @@ echo 'PATH=$GOPATH/bin:$PATH' >> ~/.bash_profile
 . ~/.bash_profile
 ```
  
- Finally, get the plugin:
+Get the plugin:
  
 ```go get github.com/virtuozzo/docker-volume-ploop```
 
 Generally, you don't have to install the dependencies, as ```go get``` will do it for you.
 
+Install the configuration files:
+ 
+ ```cd $GOPATH/src/github.com/*/docker-volume-ploop && make install```
+
+## Starting
+
+First, you need to set home path for the plugin. To do so, edit the ```/etc/sysconfig/docker-volume-plugin``` file, uncommenting the ```DKV_PLOOP_HOME=``` line, and modifying the ```-home``` argument, for example:
+
+```
+# Set the plugin home directory
+DKV_PLOOP_HOME="-home /mnt/vstorage/docker/"
+```
+
+Now you can start a daemon:
+
+```systemctl start docker-volume-ploop```
+
 ## Usage
 
-You need to have this plugin started before starting docker daemon.
-For available options, see
+Once docker and docker-volume-ploop are running, you can create a volume:
 
-```docker-volume-ploop -help```
+```docker volume create -d ploop -o size=512G --name MyFirstVolume```
 
-Most important, you need to provide a path where the plugin will store
-its volumes. For example:
-
-```docker-volume-ploop -home /some/path```
-
-Next, you need to create a new volume. Example:
-
-```docker volume create -d ploop -o size=512G -name MyFirstVolume```
-
-Finally, run a container with the volume:
+To run a container with the volume:
 
 ```docker run -it -v VOLUME:/MOUNT alpine /bin/ash```
 
 Here ```VOLUME``` is the volume name, and ```MOUNT``` is the path under which
-the volume will be available inside a container.
+the volume will be available inside a container. For example:
+
+```docker run -it -v MyFirstVol:/mnt alpine /bin/ash```
 
 See ```man docker volume``` for other volume operations. For example, to list existing volumes:
  
