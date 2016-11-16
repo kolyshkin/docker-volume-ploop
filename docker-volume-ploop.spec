@@ -12,7 +12,7 @@
 
 %global provider        github
 %global provider_tld    com
-%global project         virtuozzo
+%global project         kolyshkin
 %global repo            docker-volume-ploop
 # https://github.com/kolyshkin/docker-volume-ploop
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
@@ -78,6 +78,11 @@ providing packages with %{import_path} prefix.
 %setup -q -n %{repo}-%{commit}
 
 %build
+mkdir -p src/%{provider_prefix}
+rmdir src/%{provider_prefix} # rm last component only, i.e. package name
+ln -s ../../../ src/%{provider_prefix}
+export GOPATH=$(pwd):%{gopath}
+cd src/%{provider_prefix}
 %{__make}
 
 %install
