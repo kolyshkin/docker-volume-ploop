@@ -2,6 +2,9 @@
 	"ImportPath": "github.com/kolyshkin/docker-volume-ploop",
 	"GoVersion": "go1.6",
 	"GodepVersion": "v75",
+	"Packages": [
+		"github.com/kolyshkin/docker-volume-ploop"
+	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/Microsoft/go-winio",
