@@ -21,12 +21,12 @@
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           %{repo}
-Version:        0
-Release:        0.5.git%{shortcommit}%{?dist}
+Version:        0.6
+Release:        1%{?dist}
 Summary:        Docker volume plugin for vstorage and ploop
 License:        ASL 2.0
 URL:            https://%{provider_prefix}
-Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
+Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{version}.tar.gz
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 %{arm}}
@@ -75,7 +75,7 @@ providing packages with %{import_path} prefix.
 %endif
 
 %prep
-%setup -q -n %{repo}-%{commit}
+%setup -q -n %{repo}-%{version}
 
 %build
 mkdir -p src/%{provider_prefix}
@@ -159,6 +159,11 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/Godeps/_workspace:%{gopath}
 %endif
 
 %changelog
+* Fri Nov 18 2016 Kir Kolyshkin <kir@openvz.org> 0.6-1
+- Add reporting global scope in case we're on vstorage
+- all dependencies updated
+- use tito for build
+
 * Wed Jun 01 2016 Kir Kolyshkin - 0-0.1.git962397b
 - First package for Fedora
 
