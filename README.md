@@ -12,16 +12,23 @@ For Virtuozzo Storage and/or ploop, you need to have [Virtuozzo](https://virtuoz
 
 ## Installation
 
-This guide assumes you are using a recent version of Virtuozzo or OpenVZ, and have Docker up and running.
+This guide assumes you are using a recent version of Virtuozzo, Virtuozzo Storage, or OpenVZ, and already have Docker up and running.
 
-### From RPM repo
+There are two ways to install the plugin: from repo or from sources. Please choose one.
+
+### Recommended: RPM (from repo)
+
+The recommended way of installation is from the repository. This is as easy as:
 
 ```
 wget https://goo.gl/9N6lfJ -O /etc/yum.repos.d/docker-volume-ploop.repo
 yum install docker-volume-ploop
 ```
+Once installed, please proceed to [Starting](#Starting)
 
-### From source
+### Alternative: source (from git)
+
+Alternatively, you can build the plugin from source.
 
 First, you need to have ```ploop-devel``` package installed:
 
