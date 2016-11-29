@@ -17,8 +17,7 @@ This guide assumes you are using a recent version of Virtuozzo or OpenVZ, and ha
 ### From RPM repo
 
 ```
-cd /etc/yum.repos.d/
-wget https://goo.gl/9N6lfJ
+wget https://goo.gl/9N6lfJ -O /etc/yum.repos.d/docker-volume-ploop.repo
 yum install docker-volume-ploop
 ```
 
