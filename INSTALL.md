@@ -27,7 +27,7 @@ This should install all the Go packages that the plugin needs, and the plugin it
 Now, install the configuration files:
  
  ```cd $GOPATH/src/github.com/*/docker-volume-ploop && make install```
+
+## Next steps
  
- ## Next steps
- 
- Follow on to [README.md, section Starting](README.md#starting)
+Follow on to [README.md, section Starting](README.md#starting)
