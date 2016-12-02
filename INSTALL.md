@@ -28,6 +28,6 @@ Now, install the configuration files:
  
  ```cd $GOPATH/src/github.com/*/docker-volume-ploop && make install```
  
- == Next steps ==
+ ## Next steps
  
  Follow on to [README.md, section Starting](README.md#starting)
