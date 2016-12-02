@@ -1,7 +1,7 @@
 This document only describes how to install the plugin from source.
 For main documentation, see [README.md](README.md).
 
-== Dependencies ==
+## Dependencies
 
 First, you need to have ```ploop-devel``` package installed:
 
@@ -16,7 +16,7 @@ echo 'PATH=$GOPATH/bin:$PATH' >> ~/.bash_profile
 . ~/.bash_profile
 ```
 
-== Installation ==
+## Installation
 
 Get the plugin:
  
