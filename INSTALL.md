@@ -1,4 +1,5 @@
-This document describes how to install the plugin from source.
+This document only describes how to install the plugin from source.
+For main documentation, see [README.md](README.md).
 
 == Dependencies ==
 
