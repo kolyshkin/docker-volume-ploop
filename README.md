@@ -4,19 +4,15 @@ or on the distributed Virtuozzo Storage file system.
 
 ## Prerequisites
 
-This plugin uses on the following software:
-* [goploop](https://github.com/kolyshkin/goploop) (or [goploop-cli](https://github.com/kolyshkin/goploop-cli))
-* [Docker volume plugin helper](https://github.com/docker/go-plugins-helpers/tree/master/volume)
+To use this plugin with [Virtuozzo Storage](https://virtuozzo.com/products/virtuozzo-storage/), you need to have it up and running.
 
-For Virtuozzo Storage and/or ploop, you need to have [Virtuozzo](https://virtuozzo.com/) or [OpenVZ](https://openvz.org/) installed and running. As this is a plugin to Docker, naturally, you should have [Docker](https://docker.com/) up and running.
+Alternatively, to use this plugin with ploop, you need to have [Virtuozzo](virtuozzo.com/products/virtuozzo/) or [OpenVZ](https://openvz.org/) up and running.
+
+Surely, you need [Docker](https://docker.com/) up and running. Docker 1.10+ is required, Docker 1.12+ is recommended.
 
 ## Installation
 
 This guide assumes you are using a recent version of Virtuozzo, Virtuozzo Storage, or OpenVZ, and already have Docker up and running.
-
-There are two ways to install the plugin: from repo or from sources. Please choose one.
-
-### Recommended: RPM (from repo)
 
 The recommended way of installation is from the repository. This is as easy as:
 
@@ -24,34 +20,7 @@ The recommended way of installation is from the repository. This is as easy as:
 wget https://goo.gl/9N6lfJ -O /etc/yum.repos.d/docker-volume-ploop.repo
 yum install docker-volume-ploop
 ```
-Once installed, please proceed to [Starting](#Starting)
-
-### Alternative: source (from git)
-
-Alternatively, you can build the plugin from source.
-
-First, you need to have ```ploop-devel``` package installed:
-
-```yum install ploop-devel```
-
-Next, you need to have Go installed, and GOPATH environment variable set:
-
-```
-yum install golang git
-echo 'export GOPATH=$HOME/go' >> ~/.bash_profile
-echo 'PATH=$GOPATH/bin:$PATH' >> ~/.bash_profile
-. ~/.bash_profile
-```
- 
-Get the plugin:
- 
-```go get github.com/virtuozzo/docker-volume-ploop```
-
-Generally, you don't have to install the dependencies, as ```go get``` will do it for you.
-
-Install the configuration files:
- 
- ```cd $GOPATH/src/github.com/*/docker-volume-ploop && make install```
+Alternatively, you can build the plugin from source, for details, see [INSTALL.md](INSTALL.md).
 
 ## Starting
 
