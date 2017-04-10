@@ -19,15 +19,16 @@ echo 'PATH=$GOPATH/bin:$PATH' >> ~/.bash_profile
 ## Installation
 
 Get the plugin:
- 
+
 ```go get github.com/virtuozzo/docker-volume-ploop```
 
-This should install all the Go packages that the plugin needs, and the plugin itself.
+This should install all the Go packages that the plugin needs, and the plugin
+itself.
 
 Now, install the configuration files:
- 
- ```cd $GOPATH/src/github.com/*/docker-volume-ploop && make install```
+
+```cd $GOPATH/src/github.com/*/docker-volume-ploop && make install```
 
 ## Next steps
- 
-Follow on to [README.md, section Starting](README.md#starting)
+
+Follow on to [README.md, section Starting](README.md#starting).

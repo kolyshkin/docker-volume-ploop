@@ -51,11 +51,11 @@ the volume will be available inside a container. For example:
 ```docker run -it -v MyFirstVol:/mnt alpine /bin/ash```
 
 See ```man docker volume``` for other volume operations. For example, to list existing volumes:
- 
+
  ```docker volume ls```
- 
+
 ## Troubleshooting
- 
+
 ### Docker with Virtuozzo/OpenVZ kernel
 
 **For Docker to work, you need to make sure conntracks are enabled on the host.** In case it's not done, docker might complain like this:
@@ -85,21 +85,21 @@ To create a snapshot:
 To list snapshots:
 
 ```ploop snapshot-list DiskDescriptor.xml```
- 
+
 To delete a snapshot:
 
 ```ploop snapshot-delete -u UUID DiskDescriptor.xml```
- 
+
 To mount a snapshot (read-only):
 
 ```ploop mount -r -u UUID -m MOUNT_POINT DiskDescriptor.xml```
- 
+
 ### Resizing
- 
+
 To resize an image (can be done while it's running):
 
 ```ploop resize -s SIZE DiskDescriptor.xml```
- 
+
 ### Checking
 
 In case something is wrong (ploop image can't be mounted etc.), you might want to check it.
